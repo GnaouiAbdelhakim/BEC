@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+              <record model="ir.ui.view" id="stock_inherite2_form_view">
+                <field name="name">stock.picking.inherit2.form</field>
+                <field name="model">stock.picking</field>
+                <field name="type">form</field>
+                <field name="inherit_id" ref="stock.view_picking_form"/>
+                <field name="arch" type="xml">
+                	<xpath expr="//field[@name='partner_id']" position="before">
+                    	<field name="site_id" />
+                	</xpath>
+
+                </field>
+		</record>
+        <record model="ir.ui.view" id="stock_inherite2_tree_view">
+                <field name="name">stock.picking.inherit2.tree</field>
+                <field name="model">stock.picking</field>
+                <field name="type">tree</field>
+                <field name="inherit_id" ref="stock.vpicktree"/>
+                <field name="arch" type="xml">
+                	<xpath expr="//field[@name='partner_id']" position="before">
+                    	<field name="site_id" />
+                	</xpath>
+
+                </field>
+		</record>
+        <record model="ir.ui.view" id="bec_view_move_picking_form">
+            <field name="name">bec.stock.move.picking.form</field>
+            <field name="model">stock.move</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+
+                        <field name="material_id" />
+
+                </xpath>
+            </field>
+        </record>
+          <record model="ir.ui.view" id="bec_view_move_picking_tree">
+            <field name="name">bec.stock.move.picking.tree</field>
+            <field name="model">stock.move</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+
+                        <field name="material_id" />
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

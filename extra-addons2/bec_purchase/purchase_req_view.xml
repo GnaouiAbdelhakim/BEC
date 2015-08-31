@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="purchase_order_form_bec_inherit" model="ir.ui.view">
+            <field name="name">bec.purchase.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
+                    <field name="material_id" />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="site_id" />
+                </xpath>
+
+            </field>
+        </record>
+        <record id="purchase_order_tree_bec_inherit" model="ir.ui.view">
+            <field name="name">bec.purchase.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="site_id" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_purchase_requisition_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.tree.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="attributes">
+                   <attribute name="string">Ref Demande interne</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                   <attribute name="string">Demandeur</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                   <field name="schedule_date"></field>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                   <field name="department_id"></field>
+                    <field name="department_dest_id"></field>
+                    <field name="site_id"></field>
+                </xpath>
+                <xpath expr="//field[@name='date_end']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='ordering_date']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_purchase_requisition_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.form.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//group//field[@name='origin']" position="attributes">
+                <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='date_end']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@string='Request a Quotation']" position="attributes">
+                   <attribute name="attrs">{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft','in_progress' ,'open','done'))]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="user_id" string="Demandeur" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'purchase_requisition.group_purchase_requisition_user', 'purchase.group_purchase_user', 'account.group_account_invoice']}" attrs="{'readonly': [('state','not in',('draft'))]}" on_change="onchange_user(user_id)"/>
+                </xpath>
+                <xpath expr="//field[@name='exclusive']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='multiple_rfq_per_supplier']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='multiple_rfq_per_supplier']" position="before">
+                   <field name="site_id" attrs="{'readonly': [('state','not in',('draft'))]}" ></field>
+                     <field name="req_output" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='schedule_date']" position="attributes">
+                   <attribute name="string">Date</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='ordering_date']" position="replace">
+                   <field name="department_id"></field>
+                   <field name="department_dest_id"></field>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='state']" position="replace">
+                   <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,in_progress2,in_progress3,done" statusbar_colors='{"in_progress":"blue"}'/>
+                </xpath>
+                <xpath expr="//button[@name='sent_suppliers']" position="replace">
+                   <button name="sent_suppliers" states="draft" string="Confirmer" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//button[@name='cancel_requisition']" position="attributes">
+                    <attribute name="states">"draft,in_progress,in_progress2,in_progress3"</attribute>
+                </xpath>
+                <xpath expr="//button[@name='open_bid']" position="replace">
+
+                    <button name="open_bid" states="in_progress3" string="Générer DP/Transfert" class="oe_highlight" groups="bec_purchase.manager_calls_bids"/>
+                    <button name="confirm" states="in_progress" string="Valider" class="oe_highlight"/>
+                    <button name="validate" states="in_progress2" string="Approuver" class="oe_highlight"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']" position="replace">
+                     <field name="line_ids" attrs="{'readonly': [('state','not in',('draft','in_progress2','in_progress3') )]}">
+                            <tree string="Products">
+                                <field name="product_id" on_change="onchange_product_id(product_id,product_uom_id,parent.account_analytic_id,account_analytic_id,parent.schedule_date,schedule_date)"/>
+                                <field name="product_qty" on_change="onchange_product_qty(product_qty)"/>
+                                <field name="product_uom_id" groups="product.group_uom"/>
+                                <field name="qty_available" groups="purchase_requisition.group_purchase_requisition_manager"/>
+                                <field name="qty_to_purchase" groups="purchase_requisition.group_purchase_requisition_manager"/>
+                                <field name="qty_to_move" groups="purchase_requisition.group_purchase_requisition_manager" />
+                                <field name="material_id"/>
+                                <field name="schedule_date" invisible="1"/>
+                                <field name="motif"/>
+                                <field name="account_analytic_id" groups="purchase.group_analytic_accounting"/>
+
+                            </tree>
+                            <form string="Products">
+                                <group col="4" colspan="4">>
+                                    <field name="product_id" on_change="onchange_product_id(product_id,product_uom_id,parent.account_analytic_id,account_analytic_id,parent.schedule_date,schedule_date)" />
+                                    <field name="product_qty" on_change="onchange_product_qty(product_qty)" string="Quantité Demandée"/>
+                                     <field name="product_uom_id" groups="product.group_uom"/>
+                                     <field name="qty_available" groups="purchase_requisition.group_purchase_requisition_manager"/>
+                                     <field name="qty_to_purchase" groups="purchase_requisition.group_purchase_requisition_manager"/>
+                                     <field name="qty_to_move" groups="purchase_requisition.group_purchase_requisition_manager"/>
+                                    <field name="schedule_date" invisible="1"/>
+                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                                </group>
+                                <group col="4" colspan="4">
+
+                                    <field name="account_analytic_id" groups="purchase.group_analytic_accounting"/>
+                                    <field name="material_id"/>
+                                    <field name="motif"/>
+                                    <field name="select_type" groups="purchase_requisition.group_purchase_requisition_manager" attrs="{'required':[('qty_to_purchase','!=',0)],'invisible':[('qty_to_purchase','=',0)]}"/>
+                                    <field string ="Selection Fournisseurs" groups="purchase_requisition.group_purchase_requisition_manager" attrs="{'required':[('select_type','=','manual')],'invisible':[('select_type','!=','manual')]}" name="partner_id" context="{'default_supplier': 1, 'default_customer': 0}"/>
+
+                                </group>
+                            </form>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_department_form_bec_inherit" model="ir.ui.view">
+            <field name="name">bec.hr.department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="location_dest_id" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <menuitem
+        id="purchase_requisition.menu_purchase_requisition_pro_mgt"
+        name="Demande internes"
+        sequence="10"
+        parent="purchase.menu_procurement_management"
+        action="purchase_requisition.action_purchase_requisition"/>
+
+         <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition">
+        <field name="name">Demande internes</field>
+        </record>
+
+    </data>
+</openerp>

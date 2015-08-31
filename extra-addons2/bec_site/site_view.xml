@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+    	<record model="ir.ui.view" id="site_form_view">
+                <field name="name">site.form</field>
+                <field name="model">site</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="Liste Des sites" version="8.0" >
+                    	<header>
+                    		<button name="action_draft" string="Ré-ouvrir le site" class="oe_highlight" type="object" attrs="{'invisible': [('state','=','draft','cloture')]}"  />
+	                        <button name="action_ouvert" string="Ouvrir le site" class="oe_highlight" type="object" attrs="{'invisible': [('state','in',('ouvert','cloture'))]}"/>
+	                        <button name="action_client_confirm" string="Cloturer le site" class="oe_highlight" type="object" attrs="{'invisible': [('state','in',('draft','cloture'))]}"/>
+	                        <field name="state" widget="statusbar" />
+	                        <!--field name="analytic_lines_created" invisible="1" /-->
+                    	</header>
+                    	<sheet> 
+                    		<!--div class="oe_right oe_button_box" style="width: 300px;" name="buttons_site">
+                    			<button  class="oe_inline oe_stat_button" name="analytic_tree_view"  type="object">
+		                            <field string="Comptes Analytiques" name="analytic_count" widget="statinfo"/>
+		                        </button>
+		                        <button  class="oe_inline oe_stat_button" name="order_tree_view"  type="object">
+		                            <field string="Bordereaux de Prix" name="order_count" widget="statinfo"/>
+		                        </button>
+		                   		<button  class="oe_inline oe_stat_button" name="budget_tree_view"  type="object">
+		                            <field string="Budget" name="budget_count" widget="statinfo"/>
+		                        </button>
+
+                        	</div-->
+	                    	<group col="4" colspan="4">
+		                        <field name="number" readonly="1"/>
+		                        <field name="name" select="1" class="my_class"/>
+                                <field name="type" required="1" />
+                                <field name="location_id" />
+		                        <field name="project_chef_id" />
+		                        <field name="site_chef_id" />
+		                        <field name="partner_id" />
+		                        <field name="deposit_number" placeholder="Exemple : 0.2"/>
+		                        <field name="guaranty_number" placeholder="Exemple : 0.2"/>
+		                        <field name="assurance_number" placeholder="Exemple : 0.2"/>
+	                         </group>
+	                         <!--notebook>
+	                         	<page string="Bordereaux de prix">
+	                         		<field name="sale_ids" nolabel="1"  context="{'site_id':id}"/>
+	                         	</page>
+	                         	<page string="Factures clients">
+	                         		<field name="invoice_client_ids" nolabel="1" readonly="1"/>
+	                         	</page>
+	                         	<page string="Commandes fournisseurs">
+	                         		<field name="purchase_ids" nolabel="1" context="{'site_id':id}"/>
+	                         	</page>
+	                         	<page string="Factures fournisseurs">
+	                         		<field name="invoice_fournsseur_ids" nolabel="1" readonly="1"/>
+	                         	</page>
+	                         	<page string="Attachements">
+	                         		<field name="attachement_ids" nolabel="1" readonly="1"/>
+	                         	</page>
+	                         	<page string="Transfers vers site">
+	                         		<field name="internal_move_ids" nolabel="1" readonly="1"/>
+	                         	</page>
+                         	</notebook-->
+                         </sheet> 
+                    </form>
+                </field>
+            </record>
+            
+           <record model="ir.ui.view" id="site_tree_view">
+                <field name="name">site.tree</field>
+                <field name="model">site</field>
+                <field name="type">tree</field>
+                <field name="arch" type="xml">
+                    <tree string="Liste Des sites">
+                        <field name="number" />
+                        <field name="name"/>
+		                <field name="project_chef_id" />
+		                <field name="site_chef_id" />
+                        <field name="partner_id" />
+                    </tree>
+                </field>
+            </record>
+            
+            <record model="ir.actions.act_window" id="action_site_tree_view">
+                <field name="name">sites</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">site</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+            </record>
+            
+            <menuitem id="menu_site_root" name="Chantiers" />
+            <menuitem id="menu_site" name="Chantiers" parent="menu_site_root" sequence="0"/>
+            <menuitem id="menu_list_site" name="sites" parent="menu_site" sequence="2" action="action_site_tree_view"/>
+	</data>
+</openerp>

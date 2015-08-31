@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <record id="manager_calls_bids" model="res.groups">
+        <field name="name">Appel d'offre/ Manager</field>
+        </record>
+
+    <record id="user_calls_bids" model="res.groups">
+        <field name="name">Appel d'offre/ Utilisateur</field>
+    </record>
+
+    </data>
+</openerp>

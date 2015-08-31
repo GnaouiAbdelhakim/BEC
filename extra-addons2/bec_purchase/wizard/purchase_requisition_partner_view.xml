@@ -1,0 +1,25 @@
+<openerp>
+      <data>
+
+          <!-- Inherit Form View to Modify it -->
+          <record id="view_purchase_requisition_partner_inherit" model="ir.ui.view">
+              <field name="name">Choose Suppliers</field>
+              <field name="model">purchase.requisition.partner</field>
+              <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_partner"/>
+              <field name="arch" type="xml">
+
+                  <xpath expr="//field[@name='partner_id']" position="replace">
+                      <field name="select_type" />
+                     <field string ="Selection Fournisseurs" attrs="{'invisible':[('select_type','!=','manual')]}" name="partner_id" context="{'default_supplier': 1, 'default_customer': 0}"/>
+
+                  </xpath>
+
+              </field>
+          </record>
+
+
+
+
+        
+</data>
+</openerp>

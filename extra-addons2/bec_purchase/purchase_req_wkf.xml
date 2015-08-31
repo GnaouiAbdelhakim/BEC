@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="act_sent2" model="workflow.activity">
+            <field name="wkf_id" ref="purchase_requisition.purchase_requisition_workflow"/>
+            <field name="name">sent2</field>
+            <field name="kind">function</field>
+            <field name="action">tender_in_progress2()</field>
+        </record>
+          <record id="act_sent3" model="workflow.activity">
+            <field name="wkf_id" ref="purchase_requisition.purchase_requisition_workflow"/>
+            <field name="name">sent3</field>
+            <field name="kind">function</field>
+            <field name="action">tender_in_progress3()</field>
+        </record>
+
+        <record id="purchase_requisition.trans_sent_open" model="workflow.transition">
+            <field name="act_from" ref="purchase_requisition.act_sent"/>
+            <field name="act_to" ref="act_sent2"/>
+            <field name="signal">confirm</field>
+        </record>
+         <record id="trans_sent_open2" model="workflow.transition">
+            <field name="act_from" ref="act_sent2"/>
+            <field name="act_to" ref="act_sent3"/>
+            <field name="signal">validate</field>
+        </record>
+        <record id="trans_sent_open3" model="workflow.transition">
+            <field name="act_from" ref="act_sent3"/>
+            <field name="act_to" ref="purchase_requisition.act_open"/>
+            <field name="signal">open_bid</field>
+        </record>
+
+
+
+    </data>
+</openerp>
