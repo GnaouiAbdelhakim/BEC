@@ -26,7 +26,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 import openerp.addons.decimal_precision as dp
-
+import stage.ma
 class purchase_requisition(osv.osv):
     _inherit = "purchase.requisition"
 
