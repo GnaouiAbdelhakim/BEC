@@ -36,7 +36,7 @@ class purchase_requisition(osv.osv):
 
      'state': fields.selection([('draftt', 'Draft'), ('in_pro', 'Confirmed'),('in_progress2','Approbation Responsable'),
                                 ('in_progress3','Approbation Département'), ('done', 'Terminé'),
-                                   ('cancel', 'Cancelled')],
+                                   ('ddddddddddederer', 'Cancelled')],
                                   'Status', track_visibility='onchange', required=True,
                                   copy=False),""
      'site_id':fields.many2one("site",required=False,string="Chantier"),
