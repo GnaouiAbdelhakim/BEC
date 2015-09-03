@@ -34,7 +34,7 @@ class purchase_requisition(osv.osv):
 
     _columns = {
 
-     'state': fields.selection([('draftt', 'Draft'), ('in_pro', 'Confirmed'),('in_progress2','Approbation Responsable'),
+     'state': fields.selection([('draftt', 'Draft'), ('in_product', 'Confirmed'),('in_progress2','Approbation Responsable'),
                                 ('in_progress3','Approbation Département'), ('done', 'Terminé'),
                                    ('ddddddddddederer', 'Cancelled')],
                                   'Status', track_visibility='onchange', required=True,
